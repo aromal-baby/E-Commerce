@@ -4,6 +4,7 @@ import Button from "./Button.jsx"
 const ProductCard = ({
                          product,
                          containerClass = "",
+                         cardClass = "",
                          showHeart = true,
                          buttonStyle = "default"
                      }) => {
@@ -16,7 +17,7 @@ const ProductCard = ({
     return (
         <div className={`group ${containerClass}`}>
             {/* Combined Product Container */}
-            <div className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div className={`shadow-lg hover:shadow-xl transition-shadow duration-300 ${cardClass}`}>
                 {/* Product Image Container */}
                 <div className="relative aspect-[4/5] bg-gray-200 overflow-hidden">
                     {/* Heart Icon */}
@@ -47,7 +48,7 @@ const ProductCard = ({
                         <img
                             src={product.image}
                             alt={product.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-300`}
                         />
                     ) : (
                         // Placeholder

@@ -4,10 +4,6 @@ import Button from "./Button.jsx";
 const Hero = () => {
     return (
         <section className="relative w-full h-[750px] bg-[#A8896A] overflow-hidden">
-            {/* Announcement Bar */}
-            <div className="absolute top-0 left-0 w-full bg-gray-300 text-center py-2 text-sm text-gray-700 z-10">
-                Mentioning the style discovering according to the season
-            </div>
 
             {/* Hero Image */}
             <div className="absolute inset-0 flex justify-center items-center translate-y-5">

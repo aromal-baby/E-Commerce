@@ -22,3 +22,7 @@ html, body {
 @utility hero-text-overlay {
     @apply bg-white/90 px-1.25 py-1 shadow-lg h-[44.41px] w-[340px];
 }
+
+@utility category-name {
+  @apply text-center mt-3
+}

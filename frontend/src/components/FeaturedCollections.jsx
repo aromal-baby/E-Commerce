@@ -12,7 +12,6 @@ const FeaturedCollections = () => {
             placeholder: "🤵"
         },
         {
-            className: "-translate-y-1/2",
             id: 2,
             name: "Designer Jeans",
             price: 250,
@@ -33,7 +32,7 @@ const FeaturedCollections = () => {
             name: "Designer Shirt",
             price: 120,
             brand: "Premium Brand",
-            image: "/images/designer-shirt.jpg",
+            image: "/images/featured4.webp",
             placeholder: "👔"
         }
     ]
@@ -53,6 +52,7 @@ const FeaturedCollections = () => {
                             key={product.id}
                             product={product}
                             containerClass="cursor-pointer"
+                            cardClass={product.className || ""}
                             showHeart={true}
                             buttonStyle="default"
                         />
