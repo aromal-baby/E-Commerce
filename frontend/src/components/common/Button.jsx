@@ -10,15 +10,15 @@ const Button = ({
                     borderColor = "border-white",
                     borderBgColor = "bg-transparent",
                     borderHoverBgColor = "group-hover:border-yellow",
-                    borderOffsetX = "translate-x-1",
-                    borderOffsetY = "translate-y-1",
+                    borderOffsetX = "translate-x-0.5",
+                    borderOffsetY = "translate-y-0.5",
                 }) => {
     return (
         <div className="relative inline-block group">
             {/* Detached White Border */}
             <div
                 className={clsx(
-                    "absolute inset-0 border-2 transition-all duration-300",
+                    "absolute inset-0 border-1 transition-all duration-300",
                     borderColor,
                     borderOffsetX,
                     borderOffsetY,

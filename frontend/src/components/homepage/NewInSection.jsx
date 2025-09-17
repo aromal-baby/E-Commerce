@@ -1,20 +1,9 @@
 // NewInSection.jsx
 import React, { useState } from 'react'
-import Button from "./Button.jsx"
+import Button from "../common/Button.jsx"
+import { products } from "../../../constants/index.js";
 
 const NewInSection = () => {
-    // Sample product data - replace with your actual data
-    const products = [
-        { id: 1, image: "/images/newIn/product1.jpg"},
-        { id: 2, image: "/images/newIn/product2.jpg"},
-        { id: 3, image: "/images/newIn/product3.jpg"},
-        { id: 4, image: "/images/newIn/product4.jpg"},
-        { id: 5, image: "/images/newIn/product5.jpg"},
-        { id: 6, image: "/images/newIn/product6.jpg"},
-        { id: 7, image: "/images/newIn/product7.jpg"},
-        { id: 8, image: "/images/newIn/product8.jpg"},
-        { id: 9, image: "/images/newIn/product9.jpg"}
-    ]
 
     const [currentSet, setCurrentSet] = useState(0)
     const productsPerSet = 3

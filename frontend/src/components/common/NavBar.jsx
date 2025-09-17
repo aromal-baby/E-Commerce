@@ -1,10 +1,84 @@
-import React, {useEffect, useState} from 'react'
-import { navLinks } from "../../constants/index.js";
+import React, { useState } from 'react'
+import { Link, useLocation } from "react-router-dom";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { navLinks } from "../../../constants/index.js";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const NavBar = ({ navbarTransform }) => {
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
     const [hoveredMenu, setHoveredMenu] = useState(null)
+    const location = useLocation()
+
+
+    // Animation for the navbar to sliding in and out while scrolling
+    // Using GSAP for smooth animations and avoid rendering issues which results in laggy feel while scrolling
+    useGSAP(() => {
+
+        const location = window.location.pathname;
+        const isProductCategoryPage = location.includes('/men/') ||
+                                               location.includes('/women/') ||
+                                               location.includes('/accessories/');
+
+        if (isProductCategoryPage) {
+            // Product category pages - hide on scroll, only show when at top
+            const handleScroll = () => {
+                const currentScrollY = window.scrollY;
+
+                if (currentScrollY === 0) {
+                    // At the very top - show navbar
+                    gsap.to('.navbar', {
+                        y: 0,
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                } else {
+                    // Any scroll down - hide navbar
+                    gsap.to('.navbar', {
+                        y: -70,
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                }
+            };
+
+            window.addEventListener('scroll', handleScroll);
+            return () => window.removeEventListener('scroll', handleScroll);
+        }
+
+        let lastScrollY = 0;
+
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY < lastScrollY) {
+                // Scrolling up - show navbar immediately
+                gsap.to('.navbar', {
+                    y: 0,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            } else if (currentScrollY > 100) {
+                // Scrolling down and past initial scroll - hide navbar
+                gsap.to('.navbar', {
+                    y: -70,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            }
+
+            lastScrollY = currentScrollY;
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [])
 
 
     const toggleSearch = () => {
@@ -24,16 +98,16 @@ const NavBar = ({ navbarTransform }) => {
     return (
         <div className="relative" onMouseLeave={() => setHoveredMenu(null)}>
             <nav
-                className="fixed top-0 left-0 w-full bg-white border-b border-gray-200 shadow-sm z-50 h-[70px]"
-                style={{ transform: `translateY(${navBarTransform}px` }}
+                className="navbar fixed top-0 left-0 w-full bg-white border-b border-gray-200 shadow-sm z-50 h-[70px]"
+                style={{ transform: `translateY(${navbarTransform}px)`}}
             >
                 <div className="max-w-full mx-auto px-8 h-full">
                     <div className="flex justify-between items-center h-full relative">
                         {/* Left - LOGO */}
                         <div className="flex-shrink-0">
-                            <a href="#hero" className="flex items-center">
+                            <Link to="/" className="flex items-center">
                                 <h1 className="font-bold text-black text-2xl tracking-wide">LUXE</h1>
-                            </a>
+                            </Link>
                         </div>
 
                         {/* Center - Navigation Links (hidden when search is open) */}
@@ -45,13 +119,15 @@ const NavBar = ({ navbarTransform }) => {
                                         className="relative"
                                         onMouseEnter={() => setHoveredMenu(link.id)}
                                     >
-                                        <a
-                                            href={`#${link.id}`}
-                                            className="relative text-gray-700 hover:text-black text-[18px] transition-colors duration-300 py-2 group block"
+                                        <Link
+                                            to={`/${link.id}`}
+                                            className={`relative text-gray-700 hover:text-black text-[18px] transition-colors duration-300 py-2 group block ${
+                                                location.pathname === `/${link.id}` ? 'text-black font-bold' : ''
+                                            }`}
                                         >
                                             {link.title}
                                             <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
-                                        </a>
+                                        </Link>
                                     </div>
                                 ))}
                             </div>
@@ -104,7 +180,7 @@ const NavBar = ({ navbarTransform }) => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                                           d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                 </svg>
-                                <span className="ml-2 text-sm hidden lg:block">Account</span>
+                               {/* <span className="ml-2 text-sm hidden lg:block">Account</span>*/}
                             </a>
 
                             {/* Wishlist Icon */}
@@ -132,7 +208,7 @@ const NavBar = ({ navbarTransform }) => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                                           d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13h10M17 21a2 2 0 100-4 2 2 0 000 4zM9 21a2 2 0 100-4 2 2 0 000 4z"/>
                                 </svg>
-                                <span className="ml-2 text-sm hidden lg:block">Cart</span>
+                                {/*<span className="ml-2 text-sm hidden lg:block">Cart</span>*/}
                             </a>
                         </div>
                     </div>
@@ -152,13 +228,14 @@ const NavBar = ({ navbarTransform }) => {
                                     <ul className="space-y-2">
                                         {navLinks.find(link => link.id === hoveredMenu)?.miniMenu.items[category]?.map((item, itemIndex) => (
                                             <li key={itemIndex}>
-                                                <a
-                                                    href="#"
+                                                <Link
+                                                    to={`/${hoveredMenu}/${item.toLowerCase().replace(/\s+/g, '-')}`}
                                                     className="relative text-gray-600 hover:text-black transition-colors text-sm group"
+                                                    onClick={() => setHoveredMenu(null)}
                                                 >
                                                     {item}
                                                     <span className="absolute bottom-0 left-0 w-0 h-0.25 bg-black transition-all duration-300 group-hover:w-full"></span>
-                                                </a>
+                                                </Link>
                                             </li>
                                         ))}
                                     </ul>
