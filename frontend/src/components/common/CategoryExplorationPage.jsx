@@ -1,8 +1,14 @@
 import React, { useState } from 'react'
 import { categoryData } from "../../../constants/index.js";
+import {useSearchParams} from "react-router-dom";
 
 const CategoryExplorationPage = () => {
-    const [activeMainCategory, setActiveMainCategory] = useState('women') // Women active by default
+
+    const [searchParams] = useSearchParams()
+    const categoryparam = searchParams.get('category');
+
+
+    const [activeMainCategory, setActiveMainCategory] = useState(categoryparam || 'women') // Women active by default
     const [activeSidebarCategory, setActiveSidebarCategory] = useState('NEW & TRENDING')
 
 

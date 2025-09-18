@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
-import { Link, useLocation } from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { navLinks } from "../../../constants/index.js";
+import {useAuth} from "../../contexts/AuthContext.jsx";
+import {useCart} from "../../contexts/CartContext.jsx";
+import {useWishlist} from "../../contexts/WishlistContext.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,8 +14,15 @@ const NavBar = ({ navbarTransform }) => {
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
     const [hoveredMenu, setHoveredMenu] = useState(null)
-    const location = useLocation()
+    const [showUserMenu, setShowUserMenu] = useState(false)
 
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    // Context hooks
+    const { user, isAuthenticated, isAdmin, logout } = useAuth()
+    const { getCartItemCount } = useCart()
+    const { wishlistCount } = useWishlist()
 
     // Animation for the navbar to sliding in and out while scrolling
     // Using GSAP for smooth animations and avoid rendering issues which results in laggy feel while scrolling
@@ -172,8 +182,8 @@ const NavBar = ({ navbarTransform }) => {
                             </button>
 
                             {/* Account Icon */}
-                            <a
-                                href="#account"
+                            <Link
+                                to="/profile"
                                 className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 flex items-center"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,11 +191,11 @@ const NavBar = ({ navbarTransform }) => {
                                           d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                 </svg>
                                {/* <span className="ml-2 text-sm hidden lg:block">Account</span>*/}
-                            </a>
+                            </Link>
 
                             {/* Wishlist Icon */}
-                            <a
-                                href="#wishlist"
+                            <Link
+                                to="/wishlist"
                                 className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 relative"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -197,11 +207,11 @@ const NavBar = ({ navbarTransform }) => {
                                     className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                                 2
                             </span>
-                            </a>
+                            </Link>
 
                             {/* Cart Icon */}
-                            <a
-                                href="#cart"
+                            <Link
+                                to="/cart"
                                 className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 flex items-center"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -209,7 +219,7 @@ const NavBar = ({ navbarTransform }) => {
                                           d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13h10M17 21a2 2 0 100-4 2 2 0 000 4zM9 21a2 2 0 100-4 2 2 0 000 4z"/>
                                 </svg>
                                 {/*<span className="ml-2 text-sm hidden lg:block">Cart</span>*/}
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

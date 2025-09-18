@@ -1,9 +1,15 @@
 // NewInSection.jsx
 import React, { useState } from 'react'
 import Button from "../common/Button.jsx"
-import { products } from "../../../constants/index.js";
+import { allProducts } from "../../../constants/index.js";
 
 const NewInSection = () => {
+
+    const products = allProducts.slice(0, 9).map((p, i) => ({
+        id: p.id,
+        image: p.image,
+        name: p.name,
+    }))
 
     const [currentSet, setCurrentSet] = useState(0)
     const productsPerSet = 3

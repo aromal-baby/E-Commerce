@@ -1,7 +1,12 @@
 import React from 'react'
 import Button from "../common/Button.jsx";
+import { useNavigate } from "react-router-dom";
+import {navigateToCategory} from "../../../constants/index.js";
 
 const HeroMen = () => {
+
+    const navigate = useNavigate();
+
     return (
         <section className="relative w-full h-[750px] bg-[#A8896A] overflow-hidden">
 
@@ -32,14 +37,16 @@ const HeroMen = () => {
                 </div>
 
                 <div className="relative inline-block">
-                    <Button
-                    containerClass="translate-x-36.5 translate-y-2 text-orange-500 bg-black !h-[44.41px]"
-                    title="Explore Collections"
-                    borderOffsetX="translate-x-37.5"
-                    borderOffsetY="translate-y-3"
-                    borderColor="border-orange-500"
-                    borderBgColor="bg-white/60"
-                    />
+                    <div onClick={() => navigateToCategory(navigate, 'men')}>
+                        <Button
+                            containerClass="translate-x-36.5 translate-y-2 text-orange-500 bg-black !h-[44.41px]"
+                            title="Explore Collections"
+                            borderOffsetX="translate-x-37.5"
+                            borderOffsetY="translate-y-3"
+                            borderColor="border-orange-500"
+                            borderBgColor="bg-white/60"
+                        />
+                    </div>
                 </div>
             </div>
         </section>
